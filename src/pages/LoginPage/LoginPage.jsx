@@ -4,12 +4,14 @@ import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import {useNavigate} from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 
 const Login = () => {
 
     const [showPass, setShowPass] = useState(false);
     const navigate = useNavigate();
+    const {setUser} = useAuth();
     const handleShowPassword = () => {
         setShowPass(!showPass);
     }
@@ -25,7 +27,8 @@ const Login = () => {
             
             axiosPublic.post("/api/user/login", datas)
             .then((res) => {
-                console.log(res);
+                
+                setUser(res?.data?.user);
                 localStorage.setItem("accessToken", res.data.accessToken);
                 Swal.fire({
                     title: "Good job!",

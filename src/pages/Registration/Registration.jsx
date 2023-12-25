@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import {useNavigate} from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 
 const Registration = () => {
@@ -13,6 +14,7 @@ const Registration = () => {
         setShowPass(!showPass);
     }
     const axiosPublic = useAxiosPublic();
+    const {setUser} = useAuth();
     const {
         register,
         handleSubmit,
@@ -24,8 +26,8 @@ const Registration = () => {
             
             axiosPublic.post("/api/user/register", datas)
             .then((res) => {
-                
                 localStorage.setItem("accessToken", res?.data?.password);
+                setUser(res?.data);
                 Swal.fire({
                     title: "Good job!",
                     text: "You are registered!",
@@ -40,7 +42,6 @@ const Registration = () => {
                     footer: '<a href="#">Why do I have this issue?</a>'
                 });
             })
-
     }
 
     return (
