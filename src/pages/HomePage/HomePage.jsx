@@ -1,10 +1,11 @@
-import Banner from "../../components/Banner/Banner";
+
+import ShuffleHero from "../../components/SuffleHero/SuffleHero";
 
 
 const HomePage = () => {
     return (
         <div>
-            <Banner></Banner>
+            <ShuffleHero></ShuffleHero>
         </div>
     );
 };

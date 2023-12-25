@@ -3,6 +3,7 @@ import MainLayout from "../Layout/MainLayout";
 import HomePage from "../pages/HomePage/HomePage";
 import Registration from "../pages/Registration/Registration";
 import Login from "../pages/LoginPage/LoginPage";
+import AddCourse from "../pages/AddCourse/AddCourse";
 
 const MainRouter = createBrowserRouter([
     {
@@ -12,6 +13,10 @@ const MainRouter = createBrowserRouter([
             {
                 path: "/",
                 element: <HomePage></HomePage>
+            },
+            {
+                path: "/add-course",
+                element: <AddCourse></AddCourse>
             }
         ]
     },

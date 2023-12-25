@@ -52,7 +52,7 @@ const Login = () => {
             <div className="flex flex-col items-center justify-center">
 
                 <Link to={"/"} className="flex flex-col items-center gap-2">
-                    <h1 className="md:text-2xl text-xl font-bold text-white text-center">COURSERA</h1>
+                    <h1 className="md:text-2xl text-xl font-bold text-white text-center">LearnHub</h1>
                 </Link>
 
                 <div className="bg-white shadow rounded lg:w-1/3  md:w-1/2 w-full p-10 mt-16">
