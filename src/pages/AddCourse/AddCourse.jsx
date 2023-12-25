@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 
 const AddCourse = () => {
     const [topics, setTopics] = useState([]);
+    const [days, setDays] = useState([]);
+
     const {
         register,
         handleSubmit,
@@ -18,6 +20,17 @@ const AddCourse = () => {
     const handleRemoveTopics = (idx) => {
        topics.splice(idx, 1);
        setTopics([...topics]);
+    }
+    
+    const handleRemoveDay = (idx) => {
+       days.splice(idx, 1);
+       setDays([...days]);
+    }
+    
+    const handleAddDays = () => {
+        const day = document.querySelector("#day").value;
+        document.querySelector("#day").value = "";
+        setDays([...days, day]);
     }
 
     return (
@@ -90,6 +103,46 @@ const AddCourse = () => {
                                             }
                                     </div> : 
                                     <h5 className="md:text-sm text-xs text-red-500">No topics available</h5>
+                                }
+                            </div>
+
+                            <h2 className="md:text-xl text-lg font-bold col-span-full pt-5">Schedule Information</h2>
+
+                            <div className="col-span-full sm:col-span-2">
+                                <label htmlFor="start-date" className="text-sm">Start Date</label>
+                                <input {...register("start_date", { required: true })} id="duration" type="date" className="w-full rounded-md focus:ring focus:ri focus:ri bg-gray-200  p-3 " />
+                                {errors.start_date && <span className="text-red-500 md:text-sm text-xs pt-1">This field is required</span>}
+                            </div>
+                            <div className="col-span-full sm:col-span-2">
+                                <label htmlFor="end-date" className="text-sm">End Date</label>
+                                <input {...register("end_date", { required: true })} id="duration" type="date" className="w-full rounded-md focus:ring focus:ri focus:ri bg-gray-200  p-3 " />
+                                {errors.end_date && <span className="text-red-500 md:text-sm text-xs pt-1">This field is required</span>}
+                            </div>
+                            <div className="col-span-full sm:col-span-2">
+                                <label htmlFor="class-time" className="text-sm">Class Time</label>
+                                <input {...register("class_time", { required: true })} id="class-time" type="text" placeholder="Course class time" className="w-full rounded-md focus:ring focus:ri focus:ri bg-gray-200  p-3 " />
+                                {errors.class_time && <span className="text-red-500 md:text-sm text-xs pt-1">This field is required</span>}
+                            </div>
+
+                            <div className="col-span-full sm:col-span-3">
+                                <label htmlFor="day" className="text-sm">Class Days</label>
+                                <textarea id="day" type="text" placeholder="Add Class Days" className="w-full rounded-md focus:ring focus:ri focus:ri bg-gray-200 p-5 flex items-start h-24" />
+                                <span onClick={handleAddDays} className="md:btn-sm mt-4 btn btn-xs md:btn-primary btn-primary md:text-sm text-xs">Add Day</span>
+                            </div>
+                            <div className="col-span-full sm:col-span-3 md:pt-5">
+                                {
+                                    days?.length > 0 ? <div className="flex md:gap-5 gap-3 flex-wrap">
+                                        <h1>{days?.length}</h1>
+                                            {
+                                                days?.map((item, idx) => <div className="bg-gray-500 p-2 pl-5 pr-8 rounded-lg relative text-white" key={idx}>
+                                                    <h1 className="md:text-base text-sm font-semibold">
+                                                        {item}
+                                                    </h1>
+                                                    <span onClick={() => handleRemoveDay(idx)} className="btn btn-xs btn-error absolute top-0 right-0">x</span>
+                                                </div>)
+                                            }
+                                    </div> : 
+                                    <h5 className="md:text-sm text-xs text-red-500">No Days available</h5>
                                 }
                             </div>
                         </div>
