@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import {useNavigate} from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+
 
 
 const Registration = () => {
@@ -14,7 +14,7 @@ const Registration = () => {
         setShowPass(!showPass);
     }
     const axiosPublic = useAxiosPublic();
-    const {setUser} = useAuth();
+    
     const {
         register,
         handleSubmit,
@@ -25,20 +25,20 @@ const Registration = () => {
             const datas = {userName: data?.name, email: data?.email, password: data?.password};
             
             axiosPublic.post("/api/user/register", datas)
-            .then((res) => {
-                localStorage.setItem("accessToken", res?.data?.password);
-                setUser(res?.data);
+            .then(() => {
+                
                 Swal.fire({
-                    title: "Good job!",
-                    text: "You are registered!",
+                    title: "You are registered!",
+                    text: "Login Now!",
                     icon: "success"
                   });
-                  navigate("/");
+                  navigate("/login");
             }).catch(err => {
+                console.log(err)
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: err.message,
+                    text: err?.response?.data?.message || err.message,
                     footer: '<a href="#">Why do I have this issue?</a>'
                 });
             })
