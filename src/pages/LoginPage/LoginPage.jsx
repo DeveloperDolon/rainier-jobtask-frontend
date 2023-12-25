@@ -6,7 +6,8 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import {useNavigate} from "react-router-dom";
 
 
-const Registration = () => {
+const Login = () => {
+
     const [showPass, setShowPass] = useState(false);
     const navigate = useNavigate();
     const handleShowPassword = () => {
@@ -20,9 +21,9 @@ const Registration = () => {
     } = useForm();
 
     const onSubmit = (data) => {
-            const datas = {userName: data?.name, email: data?.email, password: data?.password};
+            const datas = {email: data?.email, password: data?.password};
             console.log(datas);
-            axiosPublic.post("/api/user/register", datas)
+            axiosPublic.post("/api/user/login", datas)
             .then(() => {
                 Swal.fire({
                     title: "Good job!",
@@ -51,14 +52,14 @@ const Registration = () => {
 
                 <div className="bg-white shadow rounded lg:w-1/3  md:w-1/2 w-full p-10 mt-16">
                     <p tabIndex={0} role="heading" aria-label="Login to your account" className="text-2xl font-extrabold leading-6 text-gray-800">
-                        Sing Up your account
+                        Login your account
                     </p>
 
                     <p className="text-sm mt-4 font-medium leading-none text-gray-500">
-                        Have an account?{" "}
-                        <Link to={"/login"} tabIndex={0} role="link" aria-label="Sign up here" className="text-sm font-medium leading-none underline text-gray-800 cursor-pointer">
+                        Don&apos;t have any account?{" "}
+                        <Link to={"/registration"} tabIndex={0} role="link" aria-label="Sign up here" className="text-sm font-medium leading-none underline text-gray-800 cursor-pointer">
                             {" "}
-                            Login here
+                            Register Here
                         </Link>
                     </p>
 
@@ -99,11 +100,6 @@ const Registration = () => {
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div>
-                            <lable className="text-sm font-medium leading-none text-gray-800">Name</lable>
-                            <input {...register("name", { required: true })} aria-label="enter email adress" role="input" type="text" className="bg-gray-200 border rounded focus:outline-none text-xs font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2" />
-                            {errors.name && <span className="text-red-500 md:text-sm text-xs pt-1">This field is required</span>}
-                        </div>
                         <div className="mt-6">
                             <lable className="text-sm font-medium leading-none text-gray-800">Email</lable>
                             <input {...register("email", { required: true })} aria-label="enter email adress" role="input" type="email" className="bg-gray-200 border rounded focus:outline-none text-xs font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2" />
@@ -139,4 +135,4 @@ const Registration = () => {
     );
 };
 
-export default Registration;
+export default Login;
