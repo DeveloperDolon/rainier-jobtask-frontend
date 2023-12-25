@@ -5,6 +5,7 @@ import Registration from "../pages/Registration/Registration";
 import Login from "../pages/LoginPage/LoginPage";
 import AddCourse from "../pages/AddCourse/AddCourse";
 import CoursesPage from "../pages/Courses/CoursesPage";
+import CourseDetails from "../pages/SingleCourse/CourseDetails";
 
 const MainRouter = createBrowserRouter([
     {
@@ -22,6 +23,10 @@ const MainRouter = createBrowserRouter([
             {
                 path: "/course",
                 element: <CoursesPage></CoursesPage>
+            },
+            {
+                path: "/course/:id",
+                element: <CourseDetails></CourseDetails>
             }
         ]
     },
