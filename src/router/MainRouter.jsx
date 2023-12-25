@@ -4,6 +4,7 @@ import HomePage from "../pages/HomePage/HomePage";
 import Registration from "../pages/Registration/Registration";
 import Login from "../pages/LoginPage/LoginPage";
 import AddCourse from "../pages/AddCourse/AddCourse";
+import CoursesPage from "../pages/Courses/CoursesPage";
 
 const MainRouter = createBrowserRouter([
     {
@@ -17,6 +18,10 @@ const MainRouter = createBrowserRouter([
             {
                 path: "/add-course",
                 element: <AddCourse></AddCourse>
+            },
+            {
+                path: "/course",
+                element: <CoursesPage></CoursesPage>
             }
         ]
     },

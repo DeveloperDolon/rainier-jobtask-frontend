@@ -56,7 +56,7 @@ const AddCourse = () => {
             }
         }
 
-        console.log(courseData);
+        
         console.log(localStorage.getItem("accessToken"))
         fetch("http://localhost:5000/api/courses", {
             method: "POST", // or "POST" or any other HTTP method
