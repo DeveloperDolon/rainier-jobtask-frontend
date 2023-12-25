@@ -30,6 +30,8 @@ const Login = () => {
                 
                 setUser(res?.data?.user);
                 localStorage.setItem("accessToken", res.data.accessToken);
+                localStorage.setItem("userId", res?.data?.user?._id);
+
                 Swal.fire({
                     title: "Good job!",
                     text: "You are registered!",

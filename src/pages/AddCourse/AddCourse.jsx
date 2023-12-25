@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Swal from 'sweetalert2';
 
 const AddCourse = () => {
     const [topics, setTopics] = useState([]);
@@ -18,19 +19,71 @@ const AddCourse = () => {
     }
 
     const handleRemoveTopics = (idx) => {
-       topics.splice(idx, 1);
-       setTopics([...topics]);
+        topics.splice(idx, 1);
+        setTopics([...topics]);
     }
-    
+
     const handleRemoveDay = (idx) => {
-       days.splice(idx, 1);
-       setDays([...days]);
+        days.splice(idx, 1);
+        setDays([...days]);
     }
-    
+
     const handleAddDays = () => {
         const day = document.querySelector("#day").value;
         document.querySelector("#day").value = "";
         setDays([...days, day]);
+    }
+
+    const onSubmit = (data) => {
+
+        const courseData = {
+            "user_id": localStorage.getItem("userId"),
+            "name": data?.name,
+            "description": data?.description,
+            "price": data?.price,
+            "duration": `${data?.duration} Week`,
+            "level": data?.level,
+            "topics": [
+                ...topics
+            ],
+            "schedule": {
+                "startDate": data?.start_date,
+                "endDate": data?.end_date,
+                "classDays": [
+                    ...days
+                ],
+                "classTime": data?.class_time
+            }
+        }
+
+        console.log(courseData);
+        console.log(localStorage.getItem("accessToken"))
+        fetch("http://localhost:5000/api/courses", {
+            method: "POST", // or "POST" or any other HTTP method
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            body: JSON.stringify({...courseData})
+        })
+            .then(res => {
+                if(res.status === 200) {
+                    
+                Swal.fire({
+                    title: "Good job!",
+                    text: "Course is added!",
+                    icon: "success"
+                  });
+                }
+            }).catch(err => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err.message,
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                });
+            });
+
     }
 
     return (
@@ -38,7 +91,7 @@ const AddCourse = () => {
             <h1 className="md:text-5xl text-3xl font-bold text-center py-10">Add Course</h1>
 
             <section className="p-6 ">
-                <form onSubmit={handleSubmit()} noValidate="" action="" className="container flex flex-col mx-auto space-y-12">
+                <form onSubmit={handleSubmit(onSubmit)} noValidate="" action="" className="container flex flex-col mx-auto space-y-12">
                     <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm ">
                         <div className="space-y-2 col-span-full lg:col-span-1">
                             <p className="font-medium">Course Information</p>
@@ -93,35 +146,30 @@ const AddCourse = () => {
                                 {
                                     topics?.length > 0 ? <div className="flex md:gap-5 gap-3 flex-wrap">
                                         <h1>{topics?.length}</h1>
-                                            {
-                                                topics?.map((item, idx) => <div className="bg-gray-500 p-2 pl-5 pr-8 rounded-lg relative text-white" key={idx}>
-                                                    <h1 className="md:text-base text-sm font-semibold">
-                                                        {item}
-                                                    </h1>
-                                                    <span onClick={() => handleRemoveTopics(idx)} className="btn btn-xs btn-error absolute top-0 right-0">x</span>
-                                                </div>)
-                                            }
-                                    </div> : 
-                                    <h5 className="md:text-sm text-xs text-red-500">No topics available</h5>
+                                        {
+                                            topics?.map((item, idx) => <div className="bg-gray-500 p-2 pl-5 pr-8 rounded-lg relative text-white" key={idx}>
+                                                <h1 className="md:text-base text-sm font-semibold">
+                                                    {item}
+                                                </h1>
+                                                <span onClick={() => handleRemoveTopics(idx)} className="btn btn-xs btn-error absolute top-0 right-0">x</span>
+                                            </div>)
+                                        }
+                                    </div> :
+                                        <h5 className="md:text-sm text-xs text-red-500">No topics available</h5>
                                 }
                             </div>
 
                             <h2 className="md:text-xl text-lg font-bold col-span-full pt-5">Schedule Information</h2>
 
-                            <div className="col-span-full sm:col-span-2">
+                            <div className="col-span-full sm:col-span-3">
                                 <label htmlFor="start-date" className="text-sm">Start Date</label>
                                 <input {...register("start_date", { required: true })} id="duration" type="date" className="w-full rounded-md focus:ring focus:ri focus:ri bg-gray-200  p-3 " />
                                 {errors.start_date && <span className="text-red-500 md:text-sm text-xs pt-1">This field is required</span>}
                             </div>
-                            <div className="col-span-full sm:col-span-2">
+                            <div className="col-span-full sm:col-span-3">
                                 <label htmlFor="end-date" className="text-sm">End Date</label>
                                 <input {...register("end_date", { required: true })} id="duration" type="date" className="w-full rounded-md focus:ring focus:ri focus:ri bg-gray-200  p-3 " />
                                 {errors.end_date && <span className="text-red-500 md:text-sm text-xs pt-1">This field is required</span>}
-                            </div>
-                            <div className="col-span-full sm:col-span-2">
-                                <label htmlFor="class-time" className="text-sm">Class Time</label>
-                                <input {...register("class_time", { required: true })} id="class-time" type="text" placeholder="Course class time" className="w-full rounded-md focus:ring focus:ri focus:ri bg-gray-200  p-3 " />
-                                {errors.class_time && <span className="text-red-500 md:text-sm text-xs pt-1">This field is required</span>}
                             </div>
 
                             <div className="col-span-full sm:col-span-3">
@@ -133,22 +181,22 @@ const AddCourse = () => {
                                 {
                                     days?.length > 0 ? <div className="flex md:gap-5 gap-3 flex-wrap">
                                         <h1>{days?.length}</h1>
-                                            {
-                                                days?.map((item, idx) => <div className="bg-gray-500 p-2 pl-5 pr-8 rounded-lg relative text-white" key={idx}>
-                                                    <h1 className="md:text-base text-sm font-semibold">
-                                                        {item}
-                                                    </h1>
-                                                    <span onClick={() => handleRemoveDay(idx)} className="btn btn-xs btn-error absolute top-0 right-0">x</span>
-                                                </div>)
-                                            }
-                                    </div> : 
-                                    <h5 className="md:text-sm text-xs text-red-500">No Days available</h5>
+                                        {
+                                            days?.map((item, idx) => <div className="bg-gray-500 p-2 pl-5 pr-8 rounded-lg relative text-white" key={idx}>
+                                                <h1 className="md:text-base text-sm font-semibold">
+                                                    {item}
+                                                </h1>
+                                                <span onClick={() => handleRemoveDay(idx)} className="btn btn-xs btn-error absolute top-0 right-0">x</span>
+                                            </div>)
+                                        }
+                                    </div> :
+                                        <h5 className="md:text-sm text-xs text-red-500">No Days available</h5>
                                 }
                             </div>
                         </div>
                     </fieldset>
-                    <div>
-                        <button type="submit">Add Course</button>
+                    <div className="flex justify-center">
+                        <button className="btn btn-secondary" type="submit">Add Course</button>
                     </div>
                 </form>
             </section>
