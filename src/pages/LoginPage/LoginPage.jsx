@@ -22,9 +22,11 @@ const Login = () => {
 
     const onSubmit = (data) => {
             const datas = {email: data?.email, password: data?.password};
-            console.log(datas);
+            
             axiosPublic.post("/api/user/login", datas)
-            .then(() => {
+            .then((res) => {
+                console.log(res);
+                localStorage.setItem("accessToken", res.data.accessToken);
                 Swal.fire({
                     title: "Good job!",
                     text: "You are registered!",
@@ -125,7 +127,7 @@ const Login = () => {
                         </div>
                         <div className="mt-8">
                             <button role="button" type="submit" aria-label="create my account" className="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-sm font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-full">
-                                Create my account
+                                Login my account
                             </button>
                         </div>
                     </form>

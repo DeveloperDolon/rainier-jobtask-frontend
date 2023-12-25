@@ -21,9 +21,11 @@ const Registration = () => {
 
     const onSubmit = (data) => {
             const datas = {userName: data?.name, email: data?.email, password: data?.password};
-            console.log(datas);
+            
             axiosPublic.post("/api/user/register", datas)
-            .then(() => {
+            .then((res) => {
+                
+                localStorage.setItem("accessToken", res?.data?.password);
                 Swal.fire({
                     title: "Good job!",
                     text: "You are registered!",
